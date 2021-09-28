@@ -1,0 +1,126 @@
+{
+  "name": "geekplus-expand",
+  "displayName": "geekplus-expand",
+  "description": "极智嘉vscode前端综合拓展",
+  "keywords": [
+    "geekplus",
+    "expand"
+  ],
+  "icon": "../static/icon.png",
+  "publisher": "geekArk",
+  "repository": "https://github.com/mtshen/geeklanguage",
+  "version": "1.0.3",
+  "engines": {
+    "vscode": "^1.49.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*",
+    "onLanguage:javascript",
+    "onLanguage:vue",
+    "onView:geek-locales-tree"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "geekLanguage",
+      "properties": {
+        "geekLanguage.resources": {
+          "type": "string",
+          "default": "",
+          "description": "资源, 可以传入一个JS或者JSON文件"
+        },
+        "geekLanguage.regexp": {
+          "type": "string",
+          "default": "$L(${language}),t(${language})",
+          "description": "目前只有对$L() 与 t() 写法的检查, 这里提供了自定义内容检查, 多种检查用逗号隔开"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "geek-vue-i18n-ally",
+          "title": "前端语言处理工具 - GEEK +",
+          "icon": "./static/menu-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "geek-vue-i18n-ally": [
+        {
+          "id": "geek-locales-tree",
+          "name": "可用翻译",
+          "when": "geek-on-i18n-language-tree==1"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "activitybar.refreshEntry",
+        "title": "刷新",
+        "icon": {
+          "light": "static/light/refresh.svg",
+          "dark": "static/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "activitybar.debug",
+        "title": "检查项目中没有进行国际化处理的代码片段",
+        "icon": {
+          "light": "static/bug.svg",
+          "dark": "static/bug.svg"
+        }
+      },
+      {
+        "command": "activitybar.copyEntry",
+        "title": "复制"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "activitybar.refreshEntry",
+          "when": "view == geek-locales-tree",
+          "group": "navigation"
+        },
+        {
+          "command": "activitybar.debug",
+          "when": "view == geek-locales-tree",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "activitybar.copyEntry",
+          "when": "view == geek-locales-tree"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.49.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "glob": "^7.2.0",
+    "mocha": "^8.1.3",
+    "typescript": "^4.0.2",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {}
+}
