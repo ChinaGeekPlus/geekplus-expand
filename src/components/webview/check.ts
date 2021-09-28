@@ -1,15 +1,16 @@
 import * as fs from "fs";
 import * as path from "path";
+
 import { Glob } from "glob";
-import * as vscode from "vscode";
+
+import store from "../../constants/store";
 import FileContent from "./fileContent";
+
 let gitignoreList = ["node_modules"];
 
 // 先取忽略数据
 export function getGitignores() {
-    const dirname = vscode.workspace.workspaceFolders[0] || { uri: { fsPath: "" } };
-    const fsPath = dirname.uri.fsPath;
-
+    const fsPath = store.getState("fsPath");
     return new Promise((resolve, reject) => {
         fs.readFile(path.resolve(path.join(fsPath, '.gitignore')), "utf8", (err, gitignoreStr) => {
             if (!err) {
@@ -21,8 +22,8 @@ export function getGitignores() {
 }
 
 export function ergodicFiles(panel) {
-    const dirname = vscode.workspace.workspaceFolders[0] || { uri: { fsPath: "" } };
-    const cwd = path.resolve(dirname.uri.fsPath);
+    const fsPath = store.getState("fsPath");
+    const cwd = path.resolve(fsPath);
     const ignore = parseIgnore(gitignoreList);
     return new Promise((resolve, reject) => {
         new Glob('**/*.{js,vue,ts}', { dot:true, cwd, ignore }, (error, matches) => {

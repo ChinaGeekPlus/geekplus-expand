@@ -1,23 +1,26 @@
 import * as vscode from "vscode";
-import { refreshTree } from "../tree";
+import { refreshTree } from "../../components/treeView";
 import copyText from "../tool/copy";
-import { initCheckView } from "../checkView/index";
+import { initCheckView } from "../../components/webview/index";
 
 export default function subscriptions(context) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("activitybar.refreshEntry", () => {
+    vscode.commands.registerCommand("geekplus_command.refreshEntry", () => {
       refreshTree();
     })
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand("activitybar.copyEntry", (dataItem) => {
-      copyText(dataItem.label);
-    })
+    vscode.commands.registerCommand(
+      "geekplus_command.copyEntry",
+      (dataItem) => {
+        copyText(dataItem.label);
+      }
+    )
   );
   // bugfix
   context.subscriptions.push(
-    vscode.commands.registerCommand("activitybar.debug", (dataItem) => {
-		initCheckView(context);
+    vscode.commands.registerCommand("geekplus_command.debug", (dataItem) => {
+      initCheckView(context);
     })
   );
 }

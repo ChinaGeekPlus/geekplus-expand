@@ -1,38 +1,40 @@
 // 加载依赖配置
-import { workspace, window, languages } from 'vscode';
+import { workspace, window } from 'vscode';
+import store from "./constants/store";
 
-// 树结构
-import { initTree } from "./constants/tree";
-// 加载国际化文件数据
-import { loadResource } from "./constants/resource/requestTranslate";
 // 检查国际化内容
 import { didChangeTextDocument } from "./constants/translation";
-// 配置项
-import { getResetConfigure } from './config/configure';
-// 加载事件
+import { updateConfigure } from "./constants/configuration";
 import subscriptions from "./constants/subscriptions";
+import { loadResource } from "./constants/resource";
+import { initTree } from "./components/treeView";
 
-// =============== init ==============
-// 加载用户配置
-const configure = getResetConfigure();
+// 是否初始化正常
+let isInit:boolean = true;
 
-// 如果配置项不存在, 直接警告
-if (!configure.resources) {
-	window.showInformationMessage('geek-plus-language 配置resources为空, 因此没有可用的资源!');
-} else {
-	// 加载资源
-	loadResource();
-	
-	// 加载树
+const { workspaceFolders } = workspace;
+workspaceFolders.length && store.setState("fsPath", workspaceFolders[0].uri.fsPath);
+
+// 1. 刷新配置项
+updateConfigure();
+
+// 2. 加载所需用数据
+loadResource().then(() => {
+	// 3. 加载资源树
 	initTree();
-	
-	// 绑定重绘事件
+
+	// i18n 绑定重绘事件
 	workspace.onDidChangeTextDocument(didChangeTextDocument);
 	window.onDidChangeActiveTextEditor(didChangeTextDocument);
-}
+}).catch((error) => {
+	isInit = false;
+	window.showErrorMessage(`【GEEK ERROR】 ${error.message}`, "知道了");
+});
 
-
+// 被激活时触发
 export function activate(context: { subscriptions: any[]; }) {
+	store.setState("context", context);
+
 	// 进入页面时进行一次重绘
 	didChangeTextDocument();
 	

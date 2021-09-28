@@ -72,13 +72,3 @@ export default class FileContent {
         };
     }
 }
-
-
-// 
-// // 先匹配所有的中文
-// const regexp = /[\u4e00-\u9fa5]+/g;
-// let r: RegExpExecArray;
-// let isWrong = false;
-
-
-// return { isWrong };

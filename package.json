@@ -6,15 +6,15 @@
     "geekplus",
     "expand"
   ],
-  "icon": "../static/icon.png",
+  "icon": "static/icon.png",
   "publisher": "geekArk",
-  "repository": "https://github.com/mtshen/geeklanguage",
+  "repository": "https://github.com/ChinaGeekPlus/geekplus-expand.git",
   "version": "1.0.3",
   "engines": {
     "vscode": "^1.49.0"
   },
   "categories": [
-    "Other"
+    "Extension Packs"
   ],
   "activationEvents": [
     "*",
@@ -26,14 +26,15 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "geekLanguage",
+      "title": "geekplus",
+      
       "properties": {
-        "geekLanguage.resources": {
+        "geekplus.i18nMatchResources": {
           "type": "string",
           "default": "",
           "description": "资源, 可以传入一个JS或者JSON文件"
         },
-        "geekLanguage.regexp": {
+        "geekplus.i18nMatchRegexp": {
           "type": "string",
           "default": "$L(${language}),t(${language})",
           "description": "目前只有对$L() 与 t() 写法的检查, 这里提供了自定义内容检查, 多种检查用逗号隔开"
@@ -60,7 +61,7 @@
     },
     "commands": [
       {
-        "command": "activitybar.refreshEntry",
+        "command": "geekplus_command.refreshEntry",
         "title": "刷新",
         "icon": {
           "light": "static/light/refresh.svg",
@@ -68,7 +69,7 @@
         }
       },
       {
-        "command": "activitybar.debug",
+        "command": "geekplus_command.debug",
         "title": "检查项目中没有进行国际化处理的代码片段",
         "icon": {
           "light": "static/bug.svg",
@@ -76,26 +77,26 @@
         }
       },
       {
-        "command": "activitybar.copyEntry",
+        "command": "geekplus_command.copyEntry",
         "title": "复制"
       }
     ],
     "menus": {
       "view/title": [
         {
-          "command": "activitybar.refreshEntry",
+          "command": "geekplus_command.refreshEntry",
           "when": "view == geek-locales-tree",
           "group": "navigation"
         },
         {
-          "command": "activitybar.debug",
+          "command": "geekplus_command.debug",
           "when": "view == geek-locales-tree",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "activitybar.copyEntry",
+          "command": "geekplus_command.copyEntry",
           "when": "view == geek-locales-tree"
         }
       ]

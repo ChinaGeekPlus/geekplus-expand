@@ -1,5 +1,4 @@
 // 创建树形菜单
-import { getResource, loadResource } from "../resource/requestTranslate";
 import {
   TreeDataProvider,
   Event,
@@ -11,6 +10,7 @@ import {
   window,
 } from "vscode";
 
+import store from "../../constants/store";
 let nodeDependenciesProvider;
 
 class DataProvider implements TreeDataProvider<DataItem> {
@@ -26,18 +26,12 @@ class DataProvider implements TreeDataProvider<DataItem> {
     this.data = [];
 
     // 获取用户资源
-    getResource().then((languageInfo) => {
-      // 创建树形结构
-      Object.keys(languageInfo).forEach((key) => {
-        const value = languageInfo[key];
-        this.data.push(new DataItem(`${key}: ${value}`));
-      });
-      this.loadCallback && this.loadCallback();
+    const i18nResources = store.getState("i18nResources");
+    // 创建树形结构
+    Object.keys(i18nResources).forEach((key) => {
+      const value = i18nResources[key];
+      this.data.push(new DataItem(`${key}: ${value}`));
     });
-  }
-
-  load(callback: Function) {
-    this.loadCallback = callback;
   }
 
   getTreeItem(element: DataItem): TreeItem | Thenable<TreeItem> {
@@ -53,19 +47,19 @@ class DataProvider implements TreeDataProvider<DataItem> {
 
   // 刷新
   refresh() {
-    this.data = [];
+    // this.data = [];
 
-    return loadResource().then(() => {
-      getResource().then((languageInfo) => {
-        // 创建树形结构
-        Object.keys(languageInfo).forEach((key) => {
-          const value = languageInfo[key];
-          this.data.push(new DataItem(`${key}: ${value}`));
-        });
+    // return loadResource().then(() => {
+    //   getResource().then((languageInfo) => {
+    //     // 创建树形结构
+    //     Object.keys(languageInfo).forEach((key) => {
+    //       const value = languageInfo[key];
+    //       this.data.push(new DataItem(`${key}: ${value}`));
+    //     });
 
-        this._onDidChangeTreeData.fire();
-      });
-    });
+    //     this._onDidChangeTreeData.fire();
+    //   });
+    // });
   }
 }
 
@@ -85,13 +79,11 @@ class DataItem extends TreeItem {
 
 export function initTree() {
   nodeDependenciesProvider = new DataProvider();
-  nodeDependenciesProvider.load(() => {
-    commands.executeCommand("setContext", "geek-on-i18n-language-tree", 1);
-    window.registerTreeDataProvider(
-      "geek-locales-tree",
-      nodeDependenciesProvider
-    );
-  });
+  commands.executeCommand("setContext", "geek-on-i18n-language-tree", 1);
+  window.registerTreeDataProvider(
+    "geek-locales-tree",
+    nodeDependenciesProvider
+  );
 }
 
 export function refreshTree() {
