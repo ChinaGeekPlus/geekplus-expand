@@ -9,7 +9,7 @@
   "icon": "static/icon.png",
   "publisher": "geekArk",
   "repository": "https://github.com/ChinaGeekPlus/geekplus-expand.git",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "engines": {
     "vscode": "^1.49.0"
   },
@@ -17,17 +17,16 @@
     "Extension Packs"
   ],
   "activationEvents": [
-    "*",
+    "onStartupFinished",
     "onLanguage:javascript",
     "onLanguage:vue",
-    "onView:geek-locales-tree"
+    "onView:geekplus-i18n-treeView"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
       "type": "object",
       "title": "geekplus",
-      
       "properties": {
         "geekplus.i18nMatchResources": {
           "type": "string",
@@ -53,9 +52,9 @@
     "views": {
       "geek-vue-i18n-ally": [
         {
-          "id": "geek-locales-tree",
+          "id": "geekplus-i18n-treeView",
           "name": "可用翻译",
-          "when": "geek-on-i18n-language-tree==1"
+          "when": "geekplus-on-i18n-language-tree==1"
         }
       ]
     },
@@ -69,7 +68,7 @@
         }
       },
       {
-        "command": "geekplus_command.debug",
+        "command": "geekplus_command.checkFileCodes",
         "title": "检查项目中没有进行国际化处理的代码片段",
         "icon": {
           "light": "static/bug.svg",
@@ -85,19 +84,19 @@
       "view/title": [
         {
           "command": "geekplus_command.refreshEntry",
-          "when": "view == geek-locales-tree",
+          "when": "view == geekplus-i18n-treeView",
           "group": "navigation"
         },
         {
-          "command": "geekplus_command.debug",
-          "when": "view == geek-locales-tree",
+          "command": "geekplus_command.checkFileCodes",
+          "when": "view == geekplus-i18n-treeView",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "geekplus_command.copyEntry",
-          "when": "view == geek-locales-tree"
+          "when": "view == geekplus-i18n-treeView"
         }
       ]
     }
@@ -123,5 +122,7 @@
     "typescript": "^4.0.2",
     "vscode-test": "^1.4.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "glob": "^7.2.0"
+  }
 }

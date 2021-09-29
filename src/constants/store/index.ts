@@ -30,10 +30,31 @@ class Store {
         }
     }
 
+    /**
+     * 添加/修改 state
+     * @param stateName 
+     * @param stateValue 
+     */
     setState(stateName: string, stateValue: any) {
         this.$store[stateName] = stateValue;
     }
 
+    /**
+     * 批量添加, 修改 state
+     * @param stateMap 
+     */
+    setStateMap(stateMap: Object) {
+        const { $store } = this;
+        Object.keys(stateMap).forEach(key => {
+            $store[key] = stateMap[key];
+        });
+    }
+    
+    /**
+     * 获取一个或一组state的值
+     * @param stateName 
+     * @returns 
+     */
     getState(stateName: string | string[]): any {
         const { $store } = this;
         if (typeof stateName === "object") {
@@ -49,7 +70,4 @@ class Store {
     }
 }
 
-
 export default new Store(state);
-
-

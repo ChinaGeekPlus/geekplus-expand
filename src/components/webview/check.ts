@@ -1,10 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { Glob } from "glob";
+import * as glob from "glob";
 
 import store from "../../constants/store";
 import FileContent from "./fileContent";
+import { window } from "vscode";
 
 let gitignoreList = ["node_modules"];
 
@@ -26,12 +27,13 @@ export function ergodicFiles(panel) {
     const cwd = path.resolve(fsPath);
     const ignore = parseIgnore(gitignoreList);
     return new Promise((resolve, reject) => {
-        new Glob('**/*.{js,vue,ts}', { dot:true, cwd, ignore }, (error, matches) => {
+        return new glob.Glob('**/*.{js,vue,ts}', { dot: true, cwd, ignore }, (error, matches) => {
             if (error) {
                 panel.webview.postMessage({ type: "error", message: `没有可匹配的文件, 任务失败！` });
-                return reject(error);
+                reject(error);
+            } else {
+                resolve(matches);
             }
-            resolve(matches);
         });
     });
 }

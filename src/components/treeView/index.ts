@@ -79,9 +79,9 @@ class DataItem extends TreeItem {
 
 export function initTree() {
   nodeDependenciesProvider = new DataProvider();
-  commands.executeCommand("setContext", "geek-on-i18n-language-tree", 1);
+  commands.executeCommand("setContext", "geekplus-on-i18n-language-tree", 1);
   window.registerTreeDataProvider(
-    "geek-locales-tree",
+    "geekplus-i18n-treeView",
     nodeDependenciesProvider
   );
 }
