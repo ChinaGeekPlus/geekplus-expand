@@ -1,25 +1,24 @@
 // 所有页面中的展示在这里
-import * as vscode from "vscode";
+import { Position, window, Range } from "vscode";
 
 import store from "./store";
-import parseRegexp from "./regexp";
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const { Position, window } = vscode;
 const decorationType = window.createTextEditorDecorationType({
   after: { margin: "0 0 0 0.5rem" },
 });
+
 let decorationsDebounce: NodeJS.Timeout,
   originDecorations = {},
-  decorations = {},
-  regexpList = [];
-
-// 获取用户正则数据
-regexpList = parseRegexp();
+  decorations = {};
 
 // 进行一次重绘
 export function didChangeTextDocument() {
-  const i18nResources = store.getState("i18nResources");
+  const { i18nResources, i18nMatchRegexp } = store.getState(["i18nResources", "i18nMatchRegexp"]);
+
+  // 如果还没准备好, 取消重绘逻辑
+  if (!i18nResources || !i18nMatchRegexp) {
+    return;
+  }
 
   // 当前有激活的文档
   if (window.activeTextEditor) {
@@ -42,50 +41,35 @@ export function didChangeTextDocument() {
 
 // 行处理
 // 对每行进行匹配, 找到匹配项就进行转译, 并添加到渲染队列
-function lineTextCheck(text, line, fileName, languageInfo) {
-  for (let index = regexpList.length - 1; index >= 0; index--) {
-    const regexp = regexpList[index];
-    const checkRegexp = new RegExp(regexp, "g");
+function lineTextCheck(text: string, line: number, fileName: string, languageInfo: Object) {
+  const i18nMatchRegexp = store.getState("i18nMatchRegexp");
+  const checkRegexp = new RegExp(i18nMatchRegexp, "g");
+  let lineMatchTextInfo: RegExpExecArray;
 
-    if (new RegExp(regexp).test(text)) {
-      // 找到匹配内容
-      let lineMatchTextInfo = checkRegexp.exec(text);
-      do {
-        // 转译成中文
-        const lineMatchText = lineMatchTextInfo[0];
-        const lineMatchTextCN = parseCN(lineMatchText, regexp, languageInfo);
+  // 对本行代码进行正则搜索
+  while(lineMatchTextInfo = checkRegexp.exec(text)) {
+    // 转译成中文
+    const lineMatchText = lineMatchTextInfo[0];
+    const lineMatchTextCN = languageInfo[lineMatchTextInfo[1]];
 
-        // 找到转译内容(有可能翻译失败
-        if (lineMatchTextCN) {
-          const lineMatchIndex = lineMatchTextInfo.index + lineMatchText.length;
-          // 添加到渲染队列
-          decorate(lineMatchTextCN, { fileName, line, lineMatchIndex });
-        }
-        lineMatchTextInfo = checkRegexp.exec(text);
-      } while (lineMatchTextInfo);
-      return true;
+    // 找到转译内容(有可能翻译失败
+    if (lineMatchTextCN) {
+      const lineMatchIndex = lineMatchTextInfo.index + lineMatchText.length;
+      // 添加到渲染队列
+      decorate(lineMatchTextCN, { fileName, line, lineMatchIndex });
     }
   }
 }
 
-// 翻译
-function parseCN(lineMatchText, regexpText, languageInfo) {
-  const textInfo = new RegExp(regexpText).exec(lineMatchText);
-  if (textInfo) {
-    const text = textInfo[1];
-    return languageInfo[text];
-  }
-}
-
 // 添加到任务队列
-function decorate(text, packageInfo, color = "#67C23A") {
+function decorate(text: string, packageInfo, color = "#67C23A") {
   const { fileName, line } = packageInfo;
   decorations[fileName] || (decorations[fileName] = {});
   decorations[fileName][line] || (decorations[fileName][line] = []);
 
   decorations[fileName][line].push({
     renderOptions: { after: { contentText: text, color } },
-    range: new vscode.Range(
+    range: new Range(
       new Position(line - 1, packageInfo.lineMatchIndex),
       new Position(line - 1, packageInfo.lineMatchIndex)
     ),
@@ -93,7 +77,7 @@ function decorate(text, packageInfo, color = "#67C23A") {
 }
 
 // 渲染
-function refreshDecorations(fileName, delay = 10) {
+function refreshDecorations(fileName: string, delay: number = 10) {
   const fileDecorations = decorations[fileName]; // 本次修改数据
   const fileOriginDecorations = originDecorations[fileName] || []; // 上次修改数据
 
@@ -112,7 +96,7 @@ function refreshDecorations(fileName, delay = 10) {
       fileOriginDecorations[line] = [
         {
           renderOptions: { after: { contentText: "" } },
-          range: new vscode.Range(
+          range: new Range(
             new Position(Number(line) - 1, 1000),
             new Position(Number(line) - 1, 1000)
           ),
@@ -143,8 +127,8 @@ function refreshDecorations(fileName, delay = 10) {
 }
 
 // 获取打开的文档
-function getEditors(fileName) {
-  return vscode.window.visibleTextEditors.filter(
+function getEditors(fileName: string) {
+  return window.visibleTextEditors.filter(
     (editor) => editor.document.fileName === fileName
   );
 }

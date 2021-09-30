@@ -432,8 +432,12 @@ const data = {
   "lang.mwms.fed.arrangeTaskSplit": "理货任务拆分策略",
 };
 
-module.exports = function() {
-  return new Promise((resolve, reject) => {
-    resolve(data);
-  });
-}
+module.exports = {
+  // 支持传统的JSON文件路径以及Function
+  i18nMatchResources(next) {
+    next(data);
+  },
+
+  // 文档中使用国际化的函数名
+  i18nMatchRegexp: ["$L", "t"],
+};

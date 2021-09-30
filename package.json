@@ -9,7 +9,7 @@
   "icon": "static/icon.png",
   "publisher": "geekArk",
   "repository": "https://github.com/ChinaGeekPlus/geekplus-expand.git",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "engines": {
     "vscode": "^1.49.0"
   },
@@ -18,27 +18,13 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onLanguage:javascript",
-    "onLanguage:vue",
     "onView:geekplus-i18n-treeView"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "geekplus",
-      "properties": {
-        "geekplus.i18nMatchResources": {
-          "type": "string",
-          "default": "",
-          "description": "资源, 可以传入一个JS或者JSON文件"
-        },
-        "geekplus.i18nMatchRegexp": {
-          "type": "string",
-          "default": "$L(${language}),t(${language})",
-          "description": "目前只有对$L() 与 t() 写法的检查, 这里提供了自定义内容检查, 多种检查用逗号隔开"
-        }
-      }
+      "title": "geekplus"
     },
     "viewsContainers": {
       "activitybar": [

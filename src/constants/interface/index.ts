@@ -1,2 +1,2 @@
-export { Configuration } from "./configuration";
+export { GeekplusExpandConfig } from "./geekplusExpandConfig";
 export { StoreState } from "./storeState";
