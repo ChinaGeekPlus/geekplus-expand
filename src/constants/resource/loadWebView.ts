@@ -34,5 +34,6 @@ export function getWebViewContent(context: vscode.ExtensionContext, resourcePath
       );
     }
   );
+
   return html;
 }

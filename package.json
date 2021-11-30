@@ -9,7 +9,7 @@
   "icon": "static/icon.png",
   "publisher": "geekArk",
   "repository": "https://github.com/ChinaGeekPlus/geekplus-expand.git",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "engines": {
     "vscode": "^1.49.0"
   },
@@ -17,8 +17,7 @@
     "Extension Packs"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onView:geekplus-i18n-treeView"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -35,54 +34,24 @@
         }
       ]
     },
-    "views": {
-      "geek-vue-i18n-ally": [
-        {
-          "id": "geekplus-i18n-treeView",
-          "name": "可用翻译",
-          "when": "geekplus-on-i18n-language-tree==1"
-        }
-      ]
-    },
+    "views": {},
     "commands": [
       {
-        "command": "geekplus_command.refreshEntry",
-        "title": "刷新",
+        "command": "geekplus_command.showView",
+        "when": "geekplus_command.readyView",
+        "title": "open geekPlus expand",
         "icon": {
-          "light": "static/light/refresh.svg",
-          "dark": "static/dark/refresh.svg"
+          "light": "static/light/icon.svg",
+          "dark": "static/dark/icon.svg"
         }
-      },
-      {
-        "command": "geekplus_command.checkFileCodes",
-        "title": "检查项目中没有进行国际化处理的代码片段",
-        "icon": {
-          "light": "static/bug.svg",
-          "dark": "static/bug.svg"
-        }
-      },
-      {
-        "command": "geekplus_command.copyEntry",
-        "title": "复制"
       }
     ],
     "menus": {
-      "view/title": [
+      "editor/title": [
         {
-          "command": "geekplus_command.refreshEntry",
-          "when": "view == geekplus-i18n-treeView",
-          "group": "navigation"
-        },
-        {
-          "command": "geekplus_command.checkFileCodes",
-          "when": "view == geekplus-i18n-treeView",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "geekplus_command.copyEntry",
-          "when": "view == geekplus-i18n-treeView"
+            "when": "geekplus_command.readyView && editorFocus",
+            "command": "geekplus_command.showView",
+            "group": "navigation"
         }
       ]
     }
@@ -109,6 +78,7 @@
     "vscode-test": "^1.4.0"
   },
   "dependencies": {
-    "glob": "^7.2.0"
+    "glob": "^7.2.0",
+    "simple-git": "^2.47.0"
   }
 }

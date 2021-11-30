@@ -1,4 +1,4 @@
-// 创建树形菜单
+// 创建树形菜单 TODO: 此页面已废弃, 新的树形菜单表达在webview中进行表达
 import {
   TreeDataProvider,
   Event,
@@ -47,19 +47,6 @@ class DataProvider implements TreeDataProvider<DataItem> {
 
   // 刷新
   refresh() {
-    // this.data = [];
-
-    // return loadResource().then(() => {
-    //   getResource().then((languageInfo) => {
-    //     // 创建树形结构
-    //     Object.keys(languageInfo).forEach((key) => {
-    //       const value = languageInfo[key];
-    //       this.data.push(new DataItem(`${key}: ${value}`));
-    //     });
-
-    //     this._onDidChangeTreeData.fire();
-    //   });
-    // });
   }
 }
 

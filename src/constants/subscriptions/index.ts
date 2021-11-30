@@ -2,9 +2,7 @@ import { window, workspace, commands, Disposable } from "vscode";
 import store from "../store";
 import { didChangeTextDocument } from "../translation";
 // 注册事件
-import * as command_refreshEntry from "./commands/refreshEntry";
-import * as command_checkView from "./commands/checkView";
-import * as command_copyEntry from "./commands/copyEntry";
+import * as openWebView from "./commands/openWebView";
 
 export default function commandLoad(context) {
   // 注册 i18n 事件
@@ -14,7 +12,7 @@ export default function commandLoad(context) {
 
   // 注册点击事件
   const disposables: Disposable[] = [];
-  [command_refreshEntry, command_copyEntry, command_checkView].forEach(
+  [openWebView].forEach(
     (commandItem) => {
       try {
         const commandRus = commands.registerCommand(
