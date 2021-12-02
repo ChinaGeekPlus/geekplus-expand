@@ -49,9 +49,9 @@
     "menus": {
       "editor/title": [
         {
-            "when": "geekplus_command.readyView && editorFocus",
-            "command": "geekplus_command.showView",
-            "group": "navigation"
+          "when": "geekplus_command.readyView && editorFocus",
+          "command": "geekplus_command.showView",
+          "group": "navigation"
         }
       ]
     }
@@ -78,6 +78,7 @@
     "vscode-test": "^1.4.0"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "glob": "^7.2.0",
     "simple-git": "^2.47.0"
   }
