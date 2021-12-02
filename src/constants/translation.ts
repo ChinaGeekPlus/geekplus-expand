@@ -13,10 +13,10 @@ let decorationsDebounce: NodeJS.Timeout,
 
 // 进行一次重绘
 export function didChangeTextDocument() {
-  const { i18nResources, i18nMatchRegexp } = store.getState(["i18nResources", "i18nMatchRegexp"]);
+  const { i18nData, i18nMatchRegexp } = store.getState(["i18nData", "i18nMatchRegexp"]);
 
   // 如果还没准备好, 取消重绘逻辑
-  if (!i18nResources || !i18nMatchRegexp) {
+  if (!i18nData || !i18nMatchRegexp) {
     return;
   }
 
@@ -31,7 +31,7 @@ export function didChangeTextDocument() {
     decorations[fileName] = {};
 
     lineText.forEach((text, index) => {
-      lineTextCheck(text, index + 1, fileName, i18nResources);
+      lineTextCheck(text, index + 1, fileName, i18nData);
     });
 
     // 渲染到vscode

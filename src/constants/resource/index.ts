@@ -17,7 +17,7 @@ export function loadResource(context: ExtensionContext, type = 'ready') {
   
   return new Promise((resolve, reject) => {
     Promise.all([
-      ...resourceConfig[type].map(item => item.that.loadResource(context)),
+      ...(resourceConfig[type]).map(item => item.that.loadResource(context)),
     ]).then((handlerDataList) => {
       resourceConfig[type].forEach((item, index) => {
         item.handler(handlerDataList[index]);

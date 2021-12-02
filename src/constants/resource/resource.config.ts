@@ -29,8 +29,9 @@ const loadEslinterDataConf = {
 
 const loadGeekplusExpandDataConf = {
   that: loadGeekplusExpandData,
-  handler(data) {
-    store.setState("geekExpandConfig", data);
+  handler(geekExpandConfig) {
+    const i18nMatchRegexp = parseI18nMatchRegexp(['t']);
+    store.setStateMap({ geekExpandConfig, i18nMatchRegexp });
   },
 };
 
@@ -57,20 +58,11 @@ export default {
 
   // 刷新时需要加载的数据
   update: [loadEslinterDataConf, loadI18nDataConf],
+
+  // 仅更新i18n数据
+  i18nData: [loadI18nDataConf]
 };
 
-
-// parseGeekExpand(geekplusConfig as GeekplusExpandConfig);
-/**
- * 解析配置内容, 产生可以被识别的正则规则
- * @param config 
- */
-export function parseGeekExpand(config: GeekplusExpandConfig["i18n"]) {
-  (config.i18nMatchResources as Function)((i18nResources: Object = {}) => {
-    const i18nMatchRegexp = parseI18nMatchRegexp(config.i18nMatchRegexp);
-    store.setStateMap({ i18nMatchRegexp, i18nResources });
-  });
-}
 
 // 生产正则匹配的规则
 export function parseI18nMatchRegexp(i18nMatchRegexp: string[]) {

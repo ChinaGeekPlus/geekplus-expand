@@ -9,6 +9,7 @@ const state = {
     eslintConfText: "", // eslint数据内容
     isSyncEslinter: false,  // eslint是否一致
     i18nData: {},  // i18n数据
+    i18nMatchRegexp: '', // i18n正则匹配规则
     geekExpandConfig: {}, // Geek配置项内容
 };
 
