@@ -2,7 +2,7 @@
  * 根据vue的生命周期模拟出的生命周期(简化)
  */
 import { workspace, window, ExtensionContext } from "vscode";
-
+import geekExpandConfigHandle from './constants/geekConfigHandle';
 import { loadResource } from "./constants/resource";
 import commandLoad from "./constants/subscriptions";
 import store from "./constants/store";
@@ -22,7 +22,7 @@ export default {
       fsPath = workspaceFolders[0].uri.fsPath;
       store.setState("fsPath", fsPath);
     } else {
-      window.showErrorMessage(`【GEEK ERROR】 因为一个未知的原因, 没有找到当前项目的路径, geekplus-expand可能无法正常工作`, "知道了");
+      window.showErrorMessage(`因为一个未知的原因, 没有找到当前项目的路径, geekplus-expand可能无法正常工作`, "知道了");
       return false;
     }
 
@@ -39,8 +39,11 @@ export default {
     // 加载资源文件 TODO: 加载资源文件分为初始资源和webview资源, 这里仅加载初始资源
     try {
       await loadResource(context, "ready");
+      
+      // 处理geekExpandConfig
+      geekExpandConfigHandle();
     } catch (error) {
-      window.showErrorMessage(`【GEEK ERROR】 资源加载失败, ${error.message}`, "知道了");
+      window.showErrorMessage(`资源加载失败, ${error.message}`, "知道了");
       return false;
     }
   },

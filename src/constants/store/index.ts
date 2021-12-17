@@ -24,9 +24,9 @@ class Store {
     $triggerEvent(eventName: string) {
         const eventItem:Function[]  = this.$event[eventName];
         if (eventItem) {
-            eventItem.forEach((item: Function) => {
-                item();
-            });
+            setTimeout(() => {
+                eventItem.forEach((item: Function) => item());
+            } , 1);
         }
     }
 

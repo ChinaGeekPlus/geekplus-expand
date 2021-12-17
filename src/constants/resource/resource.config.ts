@@ -30,7 +30,12 @@ const loadEslinterDataConf = {
 const loadGeekplusExpandDataConf = {
   that: loadGeekplusExpandData,
   handler(geekExpandConfig) {
-    const i18nMatchRegexp = parseI18nMatchRegexp(['t']);
+    const { matchI18nType = '', matchI18nRegexp = '' } = geekExpandConfig;
+    // 解析regexp
+    let i18nMatchRegexp = matchI18nRegexp;
+    if (matchI18nType !== 'regexp') {
+      i18nMatchRegexp = parseI18nMatchRegexp(matchI18nRegexp.split(',') || ['t']);
+    }
     store.setStateMap({ geekExpandConfig, i18nMatchRegexp });
   },
 };

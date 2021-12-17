@@ -1,13 +1,24 @@
 import axios from 'axios';
 import getAllConfigApi from "./getAllConfigApi";
 import syncEslintrc from "./syncEslintrc";
-import changeProjectId from "./changeProjectId";
 import updateVscodeState from "./updateVscodeState";
 import updateI18nData from "./updateI18nData";
 import updateProjectI18nData from "./updateProjectI18nData";
 
+// geekExpandConfig 相关API
+import changeProjectId from "./geekExpandConfig/changeProjectId";
+import setAutoPattern from "./geekExpandConfig/setAutoPattern";
+import setMatchI18nRegexp from "./geekExpandConfig/setMatchI18nRegexp";
+import setMatchI18nType from "./geekExpandConfig/setMatchI18nType";
+import setRequestType from "./geekExpandConfig/setRequestType";
+import setRequestUrl from "./geekExpandConfig/setRequestUrl";
+import setServiceType from "./geekExpandConfig/setServiceType";
+
 // 挂载API
-const Apis = { getAllConfigApi, syncEslintrc, changeProjectId, updateVscodeState, updateI18nData, updateProjectI18nData };
+const Apis = {
+  getAllConfigApi, syncEslintrc, changeProjectId, updateVscodeState, updateI18nData, updateProjectI18nData,
+  setAutoPattern, setMatchI18nRegexp, setMatchI18nType, setRequestType, setRequestUrl, setServiceType
+};
 
 // 自动填充cookie
 axios.defaults.withCredentials = true;
@@ -26,7 +37,6 @@ axios.interceptors.response.use(function (response) {
   // 对响应错误做点什么
   return Promise.reject(error);
 });
-
 
 const errorMessage = {
   status: 1,
@@ -62,4 +72,16 @@ export function initApis(webview, subscriptions) {
       webview.postMessage({ uid, ...noApiMessage });
     }
   }, undefined, subscriptions);  
+}
+
+export function executeApi(apiName: string, option: object) {
+  return new Promise((resolve, reject) => {
+    try {
+      Apis[apiName].handler(option, (callbackData: any) => {
+        resolve(callbackData);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
