@@ -71,8 +71,8 @@ export default {
 
 // 生产正则匹配的规则
 export function parseI18nMatchRegexp(i18nMatchRegexp: string[]) {
-  const funcFlagList = i18nMatchRegexp.map(funcFlagItem => {
-    return [...funcFlagItem].map(str => ['$','.', '"', "'"].includes(str) ? `\\${str}` : str).join("");
+  const funcFlagList = i18nMatchRegexp.map((funcFlagItem: string) => {
+    return [...(funcFlagItem as any)].map(str => ['$','.', '"', "'"].includes(str) ? `\\${str}` : str).join("");
   });
   return `(?:${funcFlagList.join("|")}) {0,}\\( {0,}['"]([^'"]+)['"] {0,}\\)`;
 }

@@ -31,6 +31,7 @@ export default {
 
     /**
      * 历史遗留校验: 检查目录下是否存在 .geekplusExpand, 如果存在则移动至.vscode
+     * 这个校验将在2.0版本被删除
      */
     try {
       fs.accessSync(path.join(fsPath, ".geekplusExpand"), fs.constants.W_OK);
