@@ -5,11 +5,11 @@ import * as vscode from "vscode";
 import store from "../store";
 
 export function loadResource(context: vscode.ExtensionContext) {
-  const fsPath = store.getState("fsPath");
+  const geekplusExpandPath = store.getState("geekplusExpandPath");
 
   return new Promise((resolve, reject) => {
     try {
-      const geekExpandConf = fs.readFileSync(path.join(fsPath, "/.geekplusExpand/", "config.json"));
+      const geekExpandConf = fs.readFileSync(path.join(geekplusExpandPath, "config.json"));
       resolve(JSON.parse(geekExpandConf.toString()));
     } catch (error) {
       resolve({});

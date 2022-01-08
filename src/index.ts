@@ -3,6 +3,7 @@
  */
 import { workspace, window, ExtensionContext } from "vscode";
 import geekExpandConfigHandle from './constants/geekConfigHandle';
+import transferConfigSync from './constants/resource/defaultValue/geekplusExpandTransfer'
 import { loadResource } from "./constants/resource";
 import commandLoad from "./constants/subscriptions";
 import store from "./constants/store";
@@ -21,17 +22,23 @@ export default {
     if (workspaceFolders.length) {
       fsPath = workspaceFolders[0].uri.fsPath;
       store.setState("fsPath", fsPath);
+      // 新增geekplusExpandPath目录信息
+      store.setState("geekplusExpandPath", path.join(fsPath, '/.vscode', "/geekplusExpand"));
     } else {
       window.showErrorMessage(`因为一个未知的原因, 没有找到当前项目的路径, geekplus-expand可能无法正常工作`, "知道了");
       return false;
     }
 
     /**
-     * 检查目录下是否存在 .geekplusExpand 
-     * 如果不存在geekplusExpand 取消此功能
+     * 历史遗留校验: 检查目录下是否存在 .geekplusExpand, 如果存在则移动至.vscode
      */
     try {
       fs.accessSync(path.join(fsPath, ".geekplusExpand"), fs.constants.W_OK);
+      transferConfigSync(fsPath);
+    } catch (error) {}
+
+    try {
+      fs.accessSync(path.join(fsPath, "/.vscode/geekplusExpand"), fs.constants.W_OK);
     } catch (error) {
       return false;
     }

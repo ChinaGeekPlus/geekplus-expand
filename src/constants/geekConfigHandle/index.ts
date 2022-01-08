@@ -38,6 +38,7 @@ export default function geekExpandConfigHandle() {
     case '30s': time = 30000; break;
     case '60s': time = 60000; break;
     case '300s': time = 300000; break;
+    default: return;
   }
 
   // i18n自动拉取

@@ -4,10 +4,10 @@ import * as path from 'path';
 
 export default {
   handler(data, resolve) {
-    const { fsPath, geekExpandConfig } = store.getState(['fsPath', 'geekExpandConfig']);
+    const { geekplusExpandPath, geekExpandConfig } = store.getState(['geekplusExpandPath', 'geekExpandConfig']);
     geekExpandConfig.requestUrl = data;
     const saveData = JSON.stringify(geekExpandConfig);
-    fs.writeFileSync(path.join(fsPath, "/.geekplusExpand/", "config.json"), saveData);
+    fs.writeFileSync(path.join(geekplusExpandPath, "config.json"), saveData);
     resolve(true);
   },
 };
