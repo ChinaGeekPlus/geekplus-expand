@@ -15,7 +15,7 @@ export default {
   async created(context: ExtensionContext) {
     // 绑定一些事件
     commandLoad(context);
-
+    
     // 获取当前项目路径
     const { workspaceFolders } = workspace;
     let fsPath = "";
@@ -41,6 +41,7 @@ export default {
     try {
       fs.accessSync(path.join(fsPath, "/.vscode/geekplusExpand"), fs.constants.W_OK);
     } catch (error) {
+      window.showErrorMessage(`资源加载失败 01, ${error.message}`, "知道了");
       return false;
     }
 

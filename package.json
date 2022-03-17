@@ -37,8 +37,7 @@
     "views": {},
     "commands": [
       {
-        "command": "geekplus_command.showView",
-        "when": "geekplus_command.readyView",
+        "command": "geekplus_command.toolWebView",
         "title": "open geekPlus expand",
         "icon": {
           "light": "static/light/icon.svg",
@@ -49,8 +48,8 @@
     "menus": {
       "editor/title": [
         {
-          "when": "geekplus_command.readyView && editorFocus",
-          "command": "geekplus_command.showView",
+          "when": "geekplus_command.readytoolWebView && editorFocus",
+          "command": "geekplus_command.toolWebView",
           "group": "navigation"
         }
       ]

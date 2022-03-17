@@ -1,5 +1,5 @@
 
-import { ExtensionContext, commands } from "vscode";
+import { ExtensionContext, window, commands } from "vscode";
 import extensionConf from "./index";
 // store
 import store from "./constants/store";
@@ -15,7 +15,7 @@ export function activate(context: ExtensionContext) {
     extensionConf.created(context).then(() => {
       store.setState("initialization", true);
       extensionConf.activate(context);
-      commands.executeCommand('setContext', 'geekplus_command.readyView', true);
+      commands.executeCommand('setContext', 'geekplus_command.readytoolWebView', true);
     });
   }
   
