@@ -1,7 +1,7 @@
 /**
  * 根据vue的生命周期模拟出的生命周期(简化)
  */
-import { workspace, window, ExtensionContext } from "vscode";
+import { workspace, window, ExtensionContext, commands } from "vscode";
 import geekExpandConfigHandle from './constants/geekConfigHandle';
 import transferConfigSync from './constants/resource/defaultValue/geekplusExpandTransfer'
 import { loadResource } from "./constants/resource";
@@ -10,9 +10,15 @@ import store from "./constants/store";
 import * as path from "path";
 import * as fs from "fs";
 
+// 尝试在初始化时绑定事件
+import * as openWebView from "./constants/subscriptions/commands/openWebView";
+
 export default {
   // 插件初始化, 永远只会执行一次
   async created(context: ExtensionContext) {
+    context.subscriptions.push(commands.registerCommand(openWebView.commandName,
+      openWebView.commandHander));
+    
     // 绑定一些事件
     commandLoad(context);
     
